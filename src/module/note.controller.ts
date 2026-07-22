@@ -11,6 +11,17 @@ const CreateNoteController = async (req: Request, res: Response) => {
   });
 };
 
+const GetAllNoteController = async (req: Request, res: Response) => {
+  const result = await NoteService.GetAllNotesIntoDB();
+
+  res.status(200).json({
+    success: true,
+    message: "Data Fetch Successfully.",
+    data: result,
+  });
+};
+
 export const NoteController = {
   CreateNoteController,
+  GetAllNoteController,
 };

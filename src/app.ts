@@ -12,6 +12,6 @@ app.get("/", (req, res) => {
   res.send("Node API App is running...");
 });
 
-app.use("/api/note", NoteRouter);
+app.use("/api/notes", NoteRouter);
 
 export default app;

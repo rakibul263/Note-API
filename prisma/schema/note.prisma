@@ -1,5 +1,5 @@
 model Note{
-    id BigInt @id @default(autoincrement())
+    id Int @id @default(autoincrement())
     title String
     content String
 
