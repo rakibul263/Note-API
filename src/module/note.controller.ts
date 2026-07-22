@@ -59,9 +59,28 @@ const UpdateNoteController = async (req: Request, res: Response) => {
   });
 };
 
+const DeleteNoteController = async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  const note = await NoteService.getSingleNoteFromDB(id);
+
+  if (!note) {
+    return res.status(404).json({
+      success: false,
+      message: "Note not found",
+    });
+  }
+
+  await NoteService.DeleteNoteFromDB(id);
+
+  res.status(200).json({
+    success: true,
+    message: "Note deleted successfully",
+  });
+};
 export const NoteController = {
   CreateNoteController,
   GetAllNoteController,
   GetSingleNoteController,
   UpdateNoteController,
+  DeleteNoteController,
 };

@@ -38,9 +38,19 @@ const updateNoteIntoDB = async (id: number, payload: UpdateNotePayload) => {
   return result;
 };
 
+const DeleteNoteFromDB = async (id: number) => {
+  const result = await prisma.note.delete({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
+
 export const NoteService = {
   CreateNoteIntoDB,
   GetAllNotesIntoDB,
   getSingleNoteFromDB,
   updateNoteIntoDB,
+  DeleteNoteFromDB,
 };
