@@ -1,6 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { StatusCodes } from "http-status-codes";
-import { ZodError } from "zod";
 import { AnyZodObject } from "zod/v3";
 
 const validateRequest = (schema: AnyZodObject) => {
@@ -13,13 +11,6 @@ const validateRequest = (schema: AnyZodObject) => {
       });
       next();
     } catch (error) {
-      if (error instanceof ZodError) {
-        return res.status(StatusCodes.BAD_REQUEST).json({
-          success: false,
-          message: "Validation Error",
-          errors: error.issues,
-        });
-      }
       next(error);
     }
   };

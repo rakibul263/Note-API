@@ -1,4 +1,5 @@
 import { StatusCodes } from "http-status-codes";
+import AppError from "../../errors/AppError";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { NoteService } from "./note.service";
@@ -30,12 +31,7 @@ const GetSingleNoteController = catchAsync(async (req, res) => {
   const result = await NoteService.getSingleNoteFromDB(id);
 
   if (!result) {
-    sendResponse(res, {
-      statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
-      success: true,
-      message: "Note Not Found",
-    });
-    return;
+    throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, "Note Not Found.");
   }
 
   sendResponse(res, {
@@ -51,12 +47,7 @@ const UpdateNoteController = catchAsync(async (req, res) => {
   const note = await NoteService.getSingleNoteFromDB(id);
 
   if (!note) {
-    sendResponse(res, {
-      statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
-      success: true,
-      message: "Note Not Found",
-    });
-    return;
+    throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, "Note Not Found.");
   }
 
   const result = await NoteService.updateNoteIntoDB(id, req.body);
@@ -74,12 +65,7 @@ const DeleteNoteController = catchAsync(async (req, res) => {
   const note = await NoteService.getSingleNoteFromDB(id);
 
   if (!note) {
-    sendResponse(res, {
-      statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
-      success: true,
-      message: "Note Not Found",
-    });
-    return;
+    throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, "Note Not Found.");
   }
 
   await NoteService.DeleteNoteFromDB(id);
