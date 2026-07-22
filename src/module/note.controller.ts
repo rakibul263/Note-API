@@ -39,8 +39,29 @@ const GetSingleNoteController = async (req: Request, res: Response) => {
   });
 };
 
+const UpdateNoteController = async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  const note = await NoteService.getSingleNoteFromDB(id);
+
+  if (!note) {
+    return res.status(404).json({
+      success: false,
+      message: "Note not found",
+    });
+  }
+
+  const result = await NoteService.updateNoteIntoDB(id, req.body);
+
+  res.status(200).json({
+    success: true,
+    message: "Note updated successfully.",
+    data: result,
+  });
+};
+
 export const NoteController = {
   CreateNoteController,
   GetAllNoteController,
   GetSingleNoteController,
+  UpdateNoteController,
 };

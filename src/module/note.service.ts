@@ -1,5 +1,5 @@
 import prisma from "../config/prisma";
-import { CreateNotePayload } from "./note.interface";
+import { CreateNotePayload, UpdateNotePayload } from "./note.interface";
 
 const CreateNoteIntoDB = async (payload: CreateNotePayload) => {
   const result = await prisma.note.create({
@@ -28,8 +28,19 @@ const getSingleNoteFromDB = async (id: number) => {
   return result;
 };
 
+const updateNoteIntoDB = async (id: number, payload: UpdateNotePayload) => {
+  const result = await prisma.note.update({
+    where: {
+      id,
+    },
+    data: payload,
+  });
+  return result;
+};
+
 export const NoteService = {
   CreateNoteIntoDB,
   GetAllNotesIntoDB,
   getSingleNoteFromDB,
+  updateNoteIntoDB,
 };
