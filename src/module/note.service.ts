@@ -18,7 +18,18 @@ const GetAllNotesIntoDB = async () => {
   return result;
 };
 
+// get single note
+const getSingleNoteFromDB = async (id: number) => {
+  const result = await prisma.note.findUnique({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
+
 export const NoteService = {
   CreateNoteIntoDB,
   GetAllNotesIntoDB,
+  getSingleNoteFromDB,
 };
