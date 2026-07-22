@@ -1,12 +1,13 @@
 import { StatusCodes } from "http-status-codes";
 import catchAsync from "../../utils/catchAsync";
+import sendResponse from "../../utils/sendResponse";
 import { NoteService } from "./note.service";
-
 
 const CreateNoteController = catchAsync(async (req, res) => {
   const result = await NoteService.CreateNoteIntoDB(req.body);
 
-  res.status(StatusCodes.CREATED).json({
+  sendResponse(res, {
+    statusCode: StatusCodes.CREATED,
     success: true,
     message: "Note created successfully",
     data: result,
@@ -16,7 +17,8 @@ const CreateNoteController = catchAsync(async (req, res) => {
 const GetAllNoteController = catchAsync(async (req, res) => {
   const result = await NoteService.GetAllNotesIntoDB();
 
-  res.status(200).json({
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
     success: true,
     message: "Data Fetch Successfully.",
     data: result,
@@ -28,16 +30,18 @@ const GetSingleNoteController = catchAsync(async (req, res) => {
   const result = await NoteService.getSingleNoteFromDB(id);
 
   if (!result) {
-    res.status(StatusCodes.OK).json({
-      success: false,
-      message: "Note not found",
+    sendResponse(res, {
+      statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
+      success: true,
+      message: "Note Not Found",
     });
     return;
   }
 
-  res.status(StatusCodes.OK).json({
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
     success: true,
-    message: "Data fetch successfully.",
+    message: "Data Fetch Successfully.",
     data: result,
   });
 });
@@ -47,18 +51,20 @@ const UpdateNoteController = catchAsync(async (req, res) => {
   const note = await NoteService.getSingleNoteFromDB(id);
 
   if (!note) {
-    res.status(StatusCodes.OK).json({
-      success: false,
-      message: "Note not found",
+    sendResponse(res, {
+      statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
+      success: true,
+      message: "Note Not Found",
     });
     return;
   }
 
   const result = await NoteService.updateNoteIntoDB(id, req.body);
 
-  res.status(StatusCodes.OK).json({
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
     success: true,
-    message: "Note updated successfully.",
+    message: "Note Updated Successfully.",
     data: result,
   });
 });
@@ -68,20 +74,23 @@ const DeleteNoteController = catchAsync(async (req, res) => {
   const note = await NoteService.getSingleNoteFromDB(id);
 
   if (!note) {
-    res.status(404).json({
-      success: false,
-      message: "Note not found",
+    sendResponse(res, {
+      statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
+      success: true,
+      message: "Note Not Found",
     });
     return;
   }
 
   await NoteService.DeleteNoteFromDB(id);
 
-  res.status(StatusCodes.OK).json({
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
     success: true,
-    message: "Note deleted successfully",
+    message: "Note Delete Successfully.",
   });
 });
+
 export const NoteController = {
   CreateNoteController,
   GetAllNoteController,
