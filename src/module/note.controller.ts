@@ -1,10 +1,11 @@
+import { StatusCodes } from "http-status-codes";
 import catchAsync from "../utils/catchAsync";
 import { NoteService } from "./note.service";
 
 const CreateNoteController = catchAsync(async (req, res) => {
   const result = await NoteService.CreateNoteIntoDB(req.body);
 
-  res.status(201).json({
+  res.status(StatusCodes.CREATED).json({
     success: true,
     message: "Note created successfully",
     data: result,
@@ -26,14 +27,14 @@ const GetSingleNoteController = catchAsync(async (req, res) => {
   const result = await NoteService.getSingleNoteFromDB(id);
 
   if (!result) {
-    res.status(404).json({
+    res.status(StatusCodes.OK).json({
       success: false,
       message: "Note not found",
     });
     return;
   }
 
-  res.status(200).json({
+  res.status(StatusCodes.OK).json({
     success: true,
     message: "Data fetch successfully.",
     data: result,
@@ -45,7 +46,7 @@ const UpdateNoteController = catchAsync(async (req, res) => {
   const note = await NoteService.getSingleNoteFromDB(id);
 
   if (!note) {
-    res.status(404).json({
+    res.status(StatusCodes.OK).json({
       success: false,
       message: "Note not found",
     });
@@ -54,7 +55,7 @@ const UpdateNoteController = catchAsync(async (req, res) => {
 
   const result = await NoteService.updateNoteIntoDB(id, req.body);
 
-  res.status(200).json({
+  res.status(StatusCodes.OK).json({
     success: true,
     message: "Note updated successfully.",
     data: result,
@@ -75,7 +76,7 @@ const DeleteNoteController = catchAsync(async (req, res) => {
 
   await NoteService.DeleteNoteFromDB(id);
 
-  res.status(200).json({
+  res.status(StatusCodes.OK).json({
     success: true,
     message: "Note deleted successfully",
   });
