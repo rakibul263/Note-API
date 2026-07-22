@@ -2,6 +2,7 @@ import cors from "cors";
 import type { Application } from "express";
 import express from "express";
 import globalErrorHandler from "./middlewares/globalErrorHandler";
+import AuthRouter from "./module/auth/auth.route";
 import NoteRouter from "./module/notes/note.route";
 
 const app: Application = express();
@@ -14,6 +15,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/notes", NoteRouter);
+app.use("/api/auth", AuthRouter);
 
 app.use(globalErrorHandler);
 
