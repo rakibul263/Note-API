@@ -1,8 +1,8 @@
 import cors from "cors";
 import type { Application } from "express";
 import express from "express";
-import NoteRouter from "./module/note.route";
 import globalErrorHandler from "./middlewares/globalErrorHandler";
+import NoteRouter from "./module/notes/note.route";
 
 const app: Application = express();
 

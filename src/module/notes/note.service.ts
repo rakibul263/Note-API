@@ -1,4 +1,4 @@
-import prisma from "../config/prisma";
+import prisma from "../../config/prisma";
 import { CreateNotePayload, UpdateNotePayload } from "./note.interface";
 
 const CreateNoteIntoDB = async (payload: CreateNotePayload) => {

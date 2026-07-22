@@ -1,6 +1,7 @@
 import { StatusCodes } from "http-status-codes";
-import catchAsync from "../utils/catchAsync";
+import catchAsync from "../../utils/catchAsync";
 import { NoteService } from "./note.service";
+
 
 const CreateNoteController = catchAsync(async (req, res) => {
   const result = await NoteService.CreateNoteIntoDB(req.body);
