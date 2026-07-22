@@ -105,6 +105,46 @@ pnpm build
 pnpm start
 ```
 
+## Testing with Insomnia
+
+### Import into Insomnia
+
+1. Open Insomnia
+2. Go to **Application > Preferences > Data** (or press `Ctrl+,`)
+3. Under **Import Data**, select **From File** or paste the raw JSON below
+4. All endpoints will be available in a **Notes API** collection
+
+<details>
+<summary>Click to expand Insomnia import JSON</summary>
+
+```json
+{"_type":"export","__export_format":4,"__export_date":"2026-07-23T00:00:00.000Z","__export_source":"notes-api.readme","resources":[{"_id":"req_notes_create","_type":"request","parentId":"wrk_notes","name":"Create Note","method":"POST","url":"{{base_url}}/api/notes","body":{"mimeType":"application/json","text":"{\n\t\"title\": \"My Note\",\n\t\"content\": \"This is the content of my note.\"\n}"},"parameters":[],"headers":[{"name":"Content-Type","value":"application/json"}],"authentication":{},"metaSortKey":-100},{"_id":"req_notes_list","_type":"request","parentId":"wrk_notes","name":"Get All Notes","method":"GET","url":"{{base_url}}/api/notes","body":{"mimeType":"application/json","text":""},"parameters":[],"headers":[],"authentication":{},"metaSortKey":-200},{"_id":"req_notes_get","_type":"request","parentId":"wrk_notes","name":"Get Single Note","method":"GET","url":"{{base_url}}/api/notes/1","body":{"mimeType":"application/json","text":""},"parameters":[],"headers":[],"authentication":{},"metaSortKey":-300},{"_id":"req_notes_update","_type":"request","parentId":"wrk_notes","name":"Update Note","method":"PATCH","url":"{{base_url}}/api/notes/1","body":{"mimeType":"application/json","text":"{\n\t\"title\": \"Updated Title\",\n\t\"content\": \"Updated content\"\n}"},"parameters":[],"headers":[{"name":"Content-Type","value":"application/json"}],"authentication":{},"metaSortKey":-400},{"_id":"req_notes_delete","_type":"request","parentId":"wrk_notes","name":"Delete Note","method":"DELETE","url":"{{base_url}}/api/notes/1","body":{"mimeType":"application/json","text":""},"parameters":[],"headers":[],"authentication":{},"metaSortKey":-500},{"_id":"wrk_notes","_type":"workspace","name":"Notes API","parentId":null,"_format":"json"},{"_id":"env_notes","_type":"environment","parentId":"wrk_notes","name":"Base URL","data":{"base_url":"http://localhost:3000"},"dataPropertyOrder":{"&":"97b0f4ea-4615-49c6-bbb5-e2aeee474070"}}]}
+```
+
+</details>
+
+### Environment Setup
+
+Create an environment variable in Insomnia:
+
+| Key        | Value                    |
+| ---------- | ------------------------ |
+| base_url   | `http://localhost:3000`  |
+
+Go to **Manage Environments** (top-left dropdown) and add `base_url`.
+
+### Manual Testing Steps
+
+| Endpoint            | Method | URL                         | Body (JSON)                                      |
+| ------------------- | ------ | --------------------------- | ------------------------------------------------ |
+| **Create Note**     | POST   | `http://localhost:3000/api/notes` | `{ "title": "My Note", "content": "Hello" }`    |
+| **Get All Notes**   | GET    | `http://localhost:3000/api/notes` | —                                                |
+| **Get Single Note** | GET    | `http://localhost:3000/api/notes/1` | —                                            |
+| **Update Note**     | PATCH  | `http://localhost:3000/api/notes/1` | `{ "title": "Updated", "content": "New" }` |
+| **Delete Note**     | DELETE | `http://localhost:3000/api/notes/1` | —                                            |
+
+> **Note:** Ensure the server is running (`pnpm dev`) before sending requests.
+
 ## API Reference
 
 ### Create a Note
