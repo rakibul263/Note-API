@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
+import catchAsync from "../utils/catchAsync";
 import { NoteService } from "./note.service";
 
-const CreateNoteController = async (req: Request, res: Response) => {
+const CreateNoteController = catchAsync(async (req, res) => {
   const result = await NoteService.CreateNoteIntoDB(req.body);
 
   res.status(201).json({
@@ -9,9 +9,9 @@ const CreateNoteController = async (req: Request, res: Response) => {
     message: "Note created successfully",
     data: result,
   });
-};
+});
 
-const GetAllNoteController = async (req: Request, res: Response) => {
+const GetAllNoteController = catchAsync(async (req, res) => {
   const result = await NoteService.GetAllNotesIntoDB();
 
   res.status(200).json({
@@ -19,17 +19,18 @@ const GetAllNoteController = async (req: Request, res: Response) => {
     message: "Data Fetch Successfully.",
     data: result,
   });
-};
+});
 
-const GetSingleNoteController = async (req: Request, res: Response) => {
+const GetSingleNoteController = catchAsync(async (req, res) => {
   const id = Number(req.params.id);
   const result = await NoteService.getSingleNoteFromDB(id);
 
   if (!result) {
-    return res.status(404).json({
+    res.status(404).json({
       success: false,
       message: "Note not found",
     });
+    return;
   }
 
   res.status(200).json({
@@ -37,17 +38,18 @@ const GetSingleNoteController = async (req: Request, res: Response) => {
     message: "Data fetch successfully.",
     data: result,
   });
-};
+});
 
-const UpdateNoteController = async (req: Request, res: Response) => {
+const UpdateNoteController = catchAsync(async (req, res) => {
   const id = Number(req.params.id);
   const note = await NoteService.getSingleNoteFromDB(id);
 
   if (!note) {
-    return res.status(404).json({
+    res.status(404).json({
       success: false,
       message: "Note not found",
     });
+    return;
   }
 
   const result = await NoteService.updateNoteIntoDB(id, req.body);
@@ -57,17 +59,18 @@ const UpdateNoteController = async (req: Request, res: Response) => {
     message: "Note updated successfully.",
     data: result,
   });
-};
+});
 
-const DeleteNoteController = async (req: Request, res: Response) => {
+const DeleteNoteController = catchAsync(async (req, res) => {
   const id = Number(req.params.id);
   const note = await NoteService.getSingleNoteFromDB(id);
 
   if (!note) {
-    return res.status(404).json({
+    res.status(404).json({
       success: false,
       message: "Note not found",
     });
+    return;
   }
 
   await NoteService.DeleteNoteFromDB(id);
@@ -76,7 +79,7 @@ const DeleteNoteController = async (req: Request, res: Response) => {
     success: true,
     message: "Note deleted successfully",
   });
-};
+});
 export const NoteController = {
   CreateNoteController,
   GetAllNoteController,
