@@ -19,13 +19,17 @@ const CreateNoteController = catchAsync(async (req, res) => {
 });
 
 const GetAllNoteController = catchAsync(async (req, res) => {
-  const result = await NoteService.GetAllNotesIntoDB(Number(req.user.id));
+  const result = await NoteService.GetAllNotesIntoDB({
+    ...req.query,
+    userId: Number(req.user.id),
+  });
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
     message: "Data Fetch Successfully.",
-    data: result,
+    data: result.data,
+    meta: result.meta,
   });
 });
 

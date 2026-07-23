@@ -1,6 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import prisma from "../../config/prisma";
 import AppError from "../../errors/AppError";
+import QueryBuilder from "../../utils/queryBuilder";
 
 const getDashboardStats = async () => {
   const [totalUsers, totalNotes, adminCount, userCount] =
@@ -14,20 +15,22 @@ const getDashboardStats = async () => {
   return { totalUsers, totalNotes, adminCount, userCount };
 };
 
-const getAllUsers = async () => {
-  const users = await prisma.user.findMany({
-    select: {
+const getAllUsers = async (query: Record<string, unknown>) => {
+  const result = await new QueryBuilder(query)
+    .search(["name", "email"])
+    .filter(["role"])
+    .sort("createdAt", "desc")
+    .paginate()
+    .execute(prisma.user, {
       id: true,
       name: true,
       email: true,
       role: true,
       createdAt: true,
       updatedAt: true,
-    },
-    orderBy: { createdAt: "desc" },
-  });
+    });
 
-  return users;
+  return result;
 };
 
 const updateUserRole = async (id: number, role: string) => {

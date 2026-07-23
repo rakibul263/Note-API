@@ -15,13 +15,14 @@ const getDashboardStats = catchAsync(async (req, res) => {
 });
 
 const getAllUsers = catchAsync(async (req, res) => {
-  const users = await AdminService.getAllUsers();
+  const result = await AdminService.getAllUsers(req.query);
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
     message: "Users fetched successfully",
-    data: users,
+    data: result.data,
+    meta: result.meta,
   });
 });
 
