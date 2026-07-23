@@ -33,6 +33,15 @@
 
 ---
 
+## Live Deployment
+
+| Service | URL |
+|---------|-----|
+| API | `https://note-api-production-4a86.up.railway.app` |
+| Swagger Docs | `https://note-api-production-4a86.up.railway.app/api-docs` |
+
+---
+
 ## Architecture
 
 ```
@@ -344,8 +353,8 @@ npx prisma db seed
 pnpm dev
 ```
 
-The API will be available at `http://localhost:3000`.  
-Swagger UI at `http://localhost:3000/api-docs`.  
+The API will be available at `http://localhost:3000` (local) or `https://note-api-production-4a86.up.railway.app` (production).  
+Swagger UI at `http://localhost:3000/api-docs` (local) or `https://note-api-production-4a86.up.railway.app/api-docs` (production).  
 Admin credentials: `admin@shuvo.com` / `admin123`.
 
 ---
@@ -794,7 +803,7 @@ docker compose exec app sh    # Shell into app container
 <summary>Click to expand Insomnia import JSON</summary>
 
 ```json
-{"_type":"export","__export_format":4,"__export_date":"2026-07-23T00:00:00.000Z","__export_source":"notes-api","resources":[{"_id":"req_register","_type":"request","parentId":"wrk_notes","name":"Register","method":"POST","url":"{{base_url}}/api/auth/register","body":{"mimeType":"application/json","text":"{\n\t\"name\": \"John Doe\",\n\t\"email\": \"user@example.com\",\n\t\"password\": \"password123\"\n}"},"parameters":[],"headers":[{"name":"Content-Type","value":"application/json"}],"authentication":{},"metaSortKey":-100},{"_id":"req_login","_type":"request","parentId":"wrk_notes","name":"Login","method":"POST","url":"{{base_url}}/api/auth/login","body":{"mimeType":"application/json","text":"{\n\t\"email\": \"user@example.com\",\n\t\"password\": \"password123\"\n}"},"parameters":[],"headers":[{"name":"Content-Type","value":"application/json"}],"authentication":{},"metaSortKey":-200},{"_id":"req_create_note","_type":"request","parentId":"wrk_notes","name":"Create Note","method":"POST","url":"{{base_url}}/api/notes","body":{"mimeType":"application/json","text":"{\n\t\"title\": \"My Note\",\n\t\"content\": \"This is the content of my note.\"\n}"},"parameters":[],"headers":[{"name":"Content-Type","value":"application/json"}],"authentication":{"type":"bearer","token":"{{accessToken}}"},"metaSortKey":-300},{"_id":"req_notes","_type":"request","parentId":"wrk_notes","name":"Get Notes","method":"GET","url":"{{base_url}}/api/notes","body":{},"parameters":[{"name":"page","value":"1"},{"name":"limit","value":"10"}],"headers":[],"authentication":{"type":"bearer","token":"{{accessToken}}"},"metaSortKey":-400},{"_id":"wrk_notes","_type":"workspace","name":"Notes API","parentId":null,"_format":"json"},{"_id":"env_notes","_type":"environment","parentId":"wrk_notes","name":"Local","data":{"base_url":"http://localhost:3000","accessToken":""},"dataPropertyOrder":{"&":"a"}}]}
+{"_type":"export","__export_format":4,"__export_date":"2026-07-23T00:00:00.000Z","__export_source":"notes-api","resources":[{"_id":"req_register","_type":"request","parentId":"wrk_notes","name":"Register","method":"POST","url":"{{base_url}}/api/auth/register","body":{"mimeType":"application/json","text":"{\n\t\"name\": \"John Doe\",\n\t\"email\": \"user@example.com\",\n\t\"password\": \"password123\"\n}"},"parameters":[],"headers":[{"name":"Content-Type","value":"application/json"}],"authentication":{},"metaSortKey":-100},{"_id":"req_login","_type":"request","parentId":"wrk_notes","name":"Login","method":"POST","url":"{{base_url}}/api/auth/login","body":{"mimeType":"application/json","text":"{\n\t\"email\": \"user@example.com\",\n\t\"password\": \"password123\"\n}"},"parameters":[],"headers":[{"name":"Content-Type","value":"application/json"}],"authentication":{},"metaSortKey":-200},{"_id":"req_create_note","_type":"request","parentId":"wrk_notes","name":"Create Note","method":"POST","url":"{{base_url}}/api/notes","body":{"mimeType":"application/json","text":"{\n\t\"title\": \"My Note\",\n\t\"content\": \"This is the content of my note.\"\n}"},"parameters":[],"headers":[{"name":"Content-Type","value":"application/json"}],"authentication":{"type":"bearer","token":"{{accessToken}}"},"metaSortKey":-300},{"_id":"req_notes","_type":"request","parentId":"wrk_notes","name":"Get Notes","method":"GET","url":"{{base_url}}/api/notes","body":{},"parameters":[{"name":"page","value":"1"},{"name":"limit","value":"10"}],"headers":[],"authentication":{"type":"bearer","token":"{{accessToken}}"},"metaSortKey":-400},{"_id":"wrk_notes","_type":"workspace","name":"Notes API","parentId":null,"_format":"json"},{"_id":"env_notes","_type":"environment","parentId":"wrk_notes","name":"Local","data":{"base_url":"http://localhost:3000","accessToken":""},"dataPropertyOrder":{"&":"a"}},{"_id":"env_notes_prod","_type":"environment","parentId":"wrk_notes","name":"Production","data":{"base_url":"https://note-api-production-4a86.up.railway.app","accessToken":""},"dataPropertyOrder":{"&":"a"}}]}
 ```
 
 </details>

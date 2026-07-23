@@ -13,6 +13,10 @@ const swaggerDoc: OpenAPIV3.Document = {
       url: "http://localhost:3000",
       description: "Development server",
     },
+    {
+      url: "https://note-api-production-4a86.up.railway.app",
+      description: "Production server (Railway)",
+    },
   ],
   components: {
     securitySchemes: {
