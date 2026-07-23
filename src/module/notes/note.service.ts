@@ -9,8 +9,11 @@ const CreateNoteIntoDB = async (payload: CreateNotePayload) => {
 };
 
 // get all notes
-const GetAllNotesIntoDB = async () => {
+const GetAllNotesIntoDB = async (userId: number) => {
   const result = await prisma.note.findMany({
+    where: {
+      userId,
+    },
     orderBy: {
       createdAt: "desc",
     },
@@ -19,29 +22,36 @@ const GetAllNotesIntoDB = async () => {
 };
 
 // get single note
-const getSingleNoteFromDB = async (id: number) => {
+const getSingleNoteFromDB = async (id: number, userId: number) => {
   const result = await prisma.note.findUnique({
     where: {
       id,
+      userId,
     },
   });
   return result;
 };
 
-const updateNoteIntoDB = async (id: number, payload: UpdateNotePayload) => {
+const updateNoteIntoDB = async (
+  id: number,
+  payload: UpdateNotePayload,
+  userId: number,
+) => {
   const result = await prisma.note.update({
     where: {
       id,
+      userId,
     },
     data: payload,
   });
   return result;
 };
 
-const DeleteNoteFromDB = async (id: number) => {
+const DeleteNoteFromDB = async (id: number, userId: number) => {
   const result = await prisma.note.delete({
     where: {
       id,
+      userId,
     },
   });
   return result;

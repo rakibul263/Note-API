@@ -7,7 +7,7 @@ import { NoteService } from "./note.service";
 const CreateNoteController = catchAsync(async (req, res) => {
   const result = await NoteService.CreateNoteIntoDB({
     ...req.body,
-    userId: req.user.id,
+    userId: Number(req.user.id),
   });
 
   sendResponse(res, {
@@ -19,7 +19,7 @@ const CreateNoteController = catchAsync(async (req, res) => {
 });
 
 const GetAllNoteController = catchAsync(async (req, res) => {
-  const result = await NoteService.GetAllNotesIntoDB();
+  const result = await NoteService.GetAllNotesIntoDB(Number(req.user.id));
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
@@ -31,7 +31,7 @@ const GetAllNoteController = catchAsync(async (req, res) => {
 
 const GetSingleNoteController = catchAsync(async (req, res) => {
   const id = Number(req.params.id);
-  const result = await NoteService.getSingleNoteFromDB(id);
+  const result = await NoteService.getSingleNoteFromDB(id, Number(req.user.id));
 
   if (!result) {
     throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, "Note Not Found.");
@@ -47,13 +47,17 @@ const GetSingleNoteController = catchAsync(async (req, res) => {
 
 const UpdateNoteController = catchAsync(async (req, res) => {
   const id = Number(req.params.id);
-  const note = await NoteService.getSingleNoteFromDB(id);
+  const note = await NoteService.getSingleNoteFromDB(id, Number(req.user.id));
 
   if (!note) {
     throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, "Note Not Found.");
   }
 
-  const result = await NoteService.updateNoteIntoDB(id, req.body);
+  const result = await NoteService.updateNoteIntoDB(
+    id,
+    req.body,
+    Number(req.user.id),
+  );
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
@@ -65,13 +69,13 @@ const UpdateNoteController = catchAsync(async (req, res) => {
 
 const DeleteNoteController = catchAsync(async (req, res) => {
   const id = Number(req.params.id);
-  const note = await NoteService.getSingleNoteFromDB(id);
+  const note = await NoteService.getSingleNoteFromDB(id, Number(req.user.id));
 
   if (!note) {
     throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, "Note Not Found.");
   }
 
-  await NoteService.DeleteNoteFromDB(id);
+  await NoteService.DeleteNoteFromDB(id, Number(req.user.id));
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
