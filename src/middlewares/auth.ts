@@ -25,7 +25,7 @@ const auth = (...roles: string[]) => {
       throw new AppError(StatusCodes.UNAUTHORIZED, "You are not authorized");
     }
 
-    let jwtToken = token;
+    let jwtToken: string | undefined = token;
     if (token.startsWith("Bearer ")) {
       jwtToken = token.split(" ")[1];
     }

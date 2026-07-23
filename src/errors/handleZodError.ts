@@ -3,10 +3,12 @@ import { ZodError } from "zod";
 import { TGenericErrorResponse } from "../interface/error";
 
 const handleZodError = (error: ZodError): TGenericErrorResponse => {
-  const errorSources = error.issues.map((issue) => ({
-    path: issue.path[issue.path.length - 1],
-    message: issue.message,
-  }));
+  const errorSources: TGenericErrorResponse["errorSources"] = error.issues.map(
+    (issue) => ({
+      path: (issue.path[issue.path.length - 1] ?? "") as string | number,
+      message: issue.message,
+    }),
+  );
   return {
     statusCode: StatusCodes.BAD_REQUEST,
     message: "Validation Error",

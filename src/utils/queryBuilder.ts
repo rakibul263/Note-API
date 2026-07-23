@@ -42,16 +42,6 @@ class QueryBuilder<T> {
     return this;
   }
 
-  async execute(model: {
-    findMany: (args: {
-      where?: any;
-      orderBy?: any;
-      skip?: number;
-      take?: number;
-      select?: any;
-    }) => Promise<T[]>;
-    count: (args: { where?: any }) => Promise<number>;
-  }): Promise<PaginatedResult<T>>;
   async execute(
     model: {
       findMany: (args: {
@@ -64,7 +54,7 @@ class QueryBuilder<T> {
       count: (args: { where?: any }) => Promise<number>;
     },
     select?: Record<string, boolean>,
-  ) {
+  ): Promise<PaginatedResult<T>> {
     const [data, total] = await Promise.all([
       model.findMany({
         where: this.where,

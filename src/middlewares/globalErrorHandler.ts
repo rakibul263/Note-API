@@ -9,7 +9,7 @@ import handlePrismaError from "./handlePrismaError";
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   let statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
   let message = "Something went wrong.";
-  let errorSources = [
+  let errorSources: { path: string | number; message: string }[] = [
     {
       path: "",
       message: "something went wrong",

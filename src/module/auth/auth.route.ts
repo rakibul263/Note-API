@@ -3,7 +3,7 @@ import validateRequest from "../../middlewares/validateRequest";
 import { AuthController } from "./auth.controller";
 import { AuthValidation } from "./auth.validation";
 
-const router = Router();
+const router: Router = Router();
 
 router.post(
   "/register",

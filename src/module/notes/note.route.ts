@@ -4,7 +4,7 @@ import validateRequest from "../../middlewares/validateRequest";
 import { NoteController } from "./note.controller";
 import { NoteValidation } from "./note.validation";
 
-const router = Router();
+const router: Router = Router();
 
 router.post(
   "/",
