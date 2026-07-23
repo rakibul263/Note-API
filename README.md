@@ -105,6 +105,71 @@ pnpm build
 pnpm start
 ```
 
+## Docker
+
+### Prerequisites
+
+- Docker and Docker Compose installed on your machine
+
+### Environment Setup
+
+Create a `.env` file in the project root (or use your existing one):
+
+```env
+JWT_ACCESS_SECRET=your-access-secret
+JWT_REFRESH_SECRET=your-refresh-secret
+```
+
+> **Note:** The `DATABASE_URL` is configured in `docker-compose.yml` to use the local PostgreSQL container.
+
+### Build and Run
+
+```bash
+# Build and start all services (app + PostgreSQL)
+docker compose up -d
+
+# View logs
+docker compose logs -f
+
+# Stop services
+docker compose down
+```
+
+The API will be available at `http://localhost:3000`.
+
+### Run Migrations and Seed
+
+After the first startup, apply migrations and seed the admin user:
+
+```bash
+# Run migrations
+docker compose exec app npx prisma migrate deploy
+
+# Seed admin user
+docker compose exec app npx prisma db seed
+```
+
+### Rebuild After Changes
+
+```bash
+docker compose up -d --build
+```
+
+### Using an External Database
+
+If you want to use a hosted database (like Prisma Postgres) instead of the local container:
+
+```bash
+# Start only the app (no local PostgreSQL)
+docker compose run -e DATABASE_URL="your-connection-string" -p 3000:3000 app
+```
+
+Or uncomment the `DATABASE_URL` in your `.env` and run:
+
+```bash
+docker compose up -d --no-deps app
+```
+
 ## Testing with Insomnia
 
 ### Import into Insomnia
