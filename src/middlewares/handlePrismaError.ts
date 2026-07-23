@@ -24,21 +24,21 @@ const handlePrismaError = (
       errorSources: [
         {
           path: "database",
-          message: "RRequested record does not exist",
+          message: "Requested record does not exist",
         },
       ],
     };
   }
-   return {
-     statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
-     message: "Database Error",
-     errorSources: [
-       {
-         path: "",
-         message: "error.message",
-       },
-     ],
-   };
+  return {
+    statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
+    message: "Database Error",
+    errorSources: [
+      {
+        path: "",
+        message: error.message,
+      },
+    ],
+  };
 };
 
-export default handlePrismaError
+export default handlePrismaError;

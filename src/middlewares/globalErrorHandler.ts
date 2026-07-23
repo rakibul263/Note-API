@@ -20,6 +20,24 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     statusCode = simplifiedError.statusCode;
     message = simplifiedError.message;
     errorSources = simplifiedError.errorSources;
+  } else if (err instanceof Prisma.PrismaClientInitializationError) {
+    statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+    message = "Database connection failed";
+    errorSources = [
+      {
+        path: "database",
+        message: err.message,
+      },
+    ];
+  } else if (err instanceof Prisma.PrismaClientValidationError) {
+    statusCode = StatusCodes.BAD_REQUEST;
+    message = "Database validation error";
+    errorSources = [
+      {
+        path: "database",
+        message: err.message,
+      },
+    ];
   } else if (err instanceof ZodError) {
     const simplifiedError = handleZodError(err);
     statusCode = simplifiedError.statusCode;
