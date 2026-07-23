@@ -4,6 +4,7 @@ import express from "express";
 import globalErrorHandler from "./middlewares/globalErrorHandler";
 import AuthRouter from "./module/auth/auth.route";
 import NoteRouter from "./module/notes/note.route";
+import AdminRouter from "./module/admin/admin.route";
 import cookieParser from "cookie-parser";
 
 const app: Application = express();
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/notes", NoteRouter);
 app.use("/api/auth", AuthRouter);
+app.use("/api/admin", AdminRouter);
 
 app.use(globalErrorHandler);
 

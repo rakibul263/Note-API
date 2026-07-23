@@ -25,14 +25,14 @@ const register = async (payload: RegisterPayload) => {
   return userData;
 };
 
-const createTokens = (user: { id: number; email: string }) => {
+const createTokens = (user: { id: number; email: string; role: string }) => {
   const accessToken = jwtToken.createToken(
-    { id: user.id, email: user.email },
+    { id: user.id, email: user.email, role: user.role },
     env.JWT_ACCESS_SECRET!,
     env.JWT_ACCESS_EXPIRES_IN!,
   );
   const refreshToken = jwtToken.createToken(
-    { id: user.id, email: user.email },
+    { id: user.id, email: user.email, role: user.role },
     env.JWT_REFRESH_SECRET!,
     env.JWT_REFRESH_EXPIRES_IN!,
   );

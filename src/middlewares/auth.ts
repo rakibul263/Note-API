@@ -6,14 +6,15 @@ import { verifyToken } from "../utils/jwt";
 interface TUser {
   id: number;
   email: string;
+  role: string;
 }
 
 declare global {
-    namespace Express {
-        interface Request {
-            user: TUser
-        }
+  namespace Express {
+    interface Request {
+      user: TUser;
     }
+  }
 }
 
 const auth = (...roles: string[]) => {
@@ -32,9 +33,16 @@ const auth = (...roles: string[]) => {
     if (!jwtToken) {
       throw new AppError(StatusCodes.UNAUTHORIZED, "You are not authorized");
     }
-    const verifiedToken = verifyToken(jwtToken, env.JWT_ACCESS_SECRET!) as TUser;
+    const verifiedToken = verifyToken(
+      jwtToken,
+      env.JWT_ACCESS_SECRET!,
+    ) as TUser;
 
     req.user = verifiedToken;
+
+    if (roles.length && !roles.includes(verifiedToken.role)) {
+      throw new AppError(StatusCodes.FORBIDDEN, "Forbidden Access");
+    }
 
     next();
   };
