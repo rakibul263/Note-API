@@ -5,7 +5,10 @@ import sendResponse from "../../utils/sendResponse";
 import { NoteService } from "./note.service";
 
 const CreateNoteController = catchAsync(async (req, res) => {
-  const result = await NoteService.CreateNoteIntoDB(req.body);
+  const result = await NoteService.CreateNoteIntoDB({
+    ...req.body,
+    userId: req.user.id,
+  });
 
   sendResponse(res, {
     statusCode: StatusCodes.CREATED,

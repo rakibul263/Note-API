@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import env from "../../config/env";
 import prisma from "../../config/prisma";
 import AppError from "../../errors/AppError";
-import createToken from "../../utils/jwt";
+import { jwtToken } from "../../utils/jwt";
 import { LoginPayload, RegisterPayload } from "./auth.interface";
 
 const register = async (payload: RegisterPayload) => {
@@ -44,7 +44,7 @@ const login = async (payload: LoginPayload) => {
     throw new AppError(StatusCodes.UNAUTHORIZED, "Invalid credentials");
   }
 
-  const accessToken = createToken(
+  const accessToken = jwtToken.createToken(
     { id: user.id, email: user.email },
     env.JWT_ACCESS_SECRET,
     env.JWT_ACCESS_EXPIRES_IN,
