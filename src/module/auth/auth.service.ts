@@ -25,6 +25,20 @@ const register = async (payload: RegisterPayload) => {
   return userData;
 };
 
+const createTokens = (user: { id: number; email: string }) => {
+  const accessToken = jwtToken.createToken(
+    { id: user.id, email: user.email },
+    env.JWT_ACCESS_SECRET!,
+    env.JWT_ACCESS_EXPIRES_IN!,
+  );
+  const refreshToken = jwtToken.createToken(
+    { id: user.id, email: user.email },
+    env.JWT_REFRESH_SECRET!,
+    env.JWT_REFRESH_EXPIRES_IN!,
+  );
+  return { accessToken, refreshToken };
+};
+
 const login = async (payload: LoginPayload) => {
   const user = await prisma.user.findUnique({
     where: {
@@ -45,19 +59,15 @@ const login = async (payload: LoginPayload) => {
     throw new AppError(StatusCodes.UNAUTHORIZED, "Invalid credentials");
   }
 
-  const accessToken = jwtToken.createToken(
-    { id: user.id, email: user.email },
-    env.JWT_ACCESS_SECRET!,
-    env.JWT_ACCESS_EXPIRES_IN!,
-  );
-  const refreshToken = jwtToken.createToken(
-    {
-      id: user.id,
-      email: user.email,
+  const { accessToken, refreshToken } = createTokens(user);
+
+  await prisma.session.create({
+    data: {
+      refreshToken,
+      userId: user.id,
+      expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
     },
-    env.JWT_REFRESH_SECRET!,
-    env.JWT_REFRESH_EXPIRES_IN!,
-  );
+  });
   const { password, ...userData } = user;
 
   return {
@@ -69,32 +79,47 @@ const login = async (payload: LoginPayload) => {
 
 const refreshToken = async (token: string) => {
   if (!token) {
-    throw new AppError(StatusCodes.UNAUTHORIZED, "Refresh toke is required");
+    throw new AppError(StatusCodes.UNAUTHORIZED, "Refresh token is required");
   }
+
+  const session = await prisma.session.findFirst({
+    where: { refreshToken: token },
+  });
+
+  if (!session) {
+    throw new AppError(StatusCodes.UNAUTHORIZED, "Invalid refresh token");
+  }
+
+  await prisma.session.delete({
+    where: { id: session.id },
+  });
 
   const decoded = verifyToken(token, env.JWT_REFRESH_SECRET!) as JwtPayload;
 
   const user = await prisma.user.findUnique({
-    where: {
-      email: decoded.email,
-    },
+    where: { email: decoded.email },
   });
+
   if (!user) {
-    throw new AppError(StatusCodes.NOT_FOUND, "user not found");
+    throw new AppError(StatusCodes.NOT_FOUND, "User not found");
   }
 
-  const accessToken = jwtToken.createToken(
-    {
-      id: user.id,
-      email: user.email,
+  const { accessToken, refreshToken: newRefreshToken } = createTokens(user);
+
+  await prisma.session.create({
+    data: {
+      refreshToken: newRefreshToken,
+      userId: user.id,
+      expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
     },
-    env.JWT_ACCESS_SECRET!,
-    env.JWT_ACCESS_EXPIRES_IN!,
-  );
+  });
+
   return {
     accessToken,
-  }
+    refreshToken: newRefreshToken,
+  };
 };
+
 export const AuthService = {
   register,
   login,

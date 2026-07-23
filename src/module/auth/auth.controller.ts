@@ -37,11 +37,18 @@ const refreshToken = catchAsync(async(req, res) => {
     const token = req.cookies.refreshToken;
     const result = await AuthService.refreshToken(token)
 
+    res.cookie("refreshToken", result.refreshToken, {
+      httpOnly: true,
+      secure: env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
+
     sendResponse(res, {
         statusCode: StatusCodes.OK,
         success: true,
         message: "Access token generated successfully.",
-        data: result
+        data: { accessToken: result.accessToken }
     })
 })
 

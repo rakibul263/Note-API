@@ -4,6 +4,8 @@ model User {
   email    String @unique
   password String
 
+  session Session[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   notes     Note[]
