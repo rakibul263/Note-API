@@ -23,7 +23,15 @@ const auth = (...roles: string[]) => {
     if (!token) {
       throw new AppError(StatusCodes.UNAUTHORIZED, "You are not authorized");
     }
-    const jwtToken = token.split(" ")[1];
+
+    let jwtToken = token;
+    if (token.startsWith("Bearer ")) {
+      jwtToken = token.split(" ")[1];
+    }
+
+    if (!jwtToken) {
+      throw new AppError(StatusCodes.UNAUTHORIZED, "You are not authorized");
+    }
     const verifiedToken = verifyToken(jwtToken, env.JWT_ACCESS_SECRET!) as TUser;
 
     req.user = verifiedToken;
