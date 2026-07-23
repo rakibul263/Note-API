@@ -6,7 +6,7 @@ const swaggerDoc: OpenAPIV3.Document = {
     title: "Notes API",
     version: "1.0.0",
     description:
-      "RESTful API for managing notes with authentication and admin panel.",
+      "RESTful API for managing notes with authentication and admin panel.<br/><br/>**Admin Login:**<br/>`POST /api/auth/login`<br/>```json\n{\n  \"email\": \"admin@shuvo.com\",\n  \"password\": \"admin123\"\n}\n```",
   },
   servers: [
     {

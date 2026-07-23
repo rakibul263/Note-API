@@ -554,6 +554,21 @@ DELETE /api/notes/1
 
 All admin endpoints require `Authorization: Bearer <admin-token>` and the user must have `role: "ADMIN"`.
 
+#### Admin Login
+
+After seeding, log in with these credentials:
+
+```bash
+curl -X POST https://note-api-production-4a86.up.railway.app/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "admin@shuvo.com",
+    "password": "admin123"
+  }'
+```
+
+Use the returned `accessToken` as the Bearer token for admin endpoints.
+
 #### Dashboard Stats
 
 ```http
